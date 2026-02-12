@@ -1,0 +1,283 @@
+name: Soprada Automation CI/CD
+
+# minimal permissions required for normal workflow operations
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: "15 3,6,9,12 * * *"  # Runs at 09:00, 12:00, 15:00, 18:00 NPT (UTC+5:45), everyday
+  workflow_dispatch:
+
+jobs:
+  automation-tests:
+    name: Run Selenium Tests (Firefox)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      PYTEST_MARKER: smoke
+      BROWSER: firefox
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Set regression marker for scheduled run
+        if: github.event_name == 'schedule'
+        run: echo "PYTEST_MARKER=regression" >> $GITHUB_ENV
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y wget unzip curl jq zip
+
+      - name: Install Firefox
+        run: |
+          # Ensure add-apt-repository and related tools are available
+          sudo apt-get update -y
+          sudo apt-get install -y software-properties-common apt-transport-https ca-certificates wget gnupg
+
+          # Add Mozilla PPA for latest Firefox builds
+          sudo add-apt-repository -y ppa:mozillateam/ppa
+
+          echo '
+          Package: *
+          Pin: release o=LP-PPA-mozillateam
+          Pin-Priority: 1001
+          ' | sudo tee /etc/apt/preferences.d/mozilla-firefox
+          sudo apt-get update
+          sudo apt-get install -y firefox
+          firefox --version
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+
+      - name: Create credentials from secrets
+        env:
+          GMAIL_CREDS: ${{ secrets.GMAIL_CREDENTIALS_JSON }}
+          GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN_JSON }}
+        run: |
+          mkdir -p resources
+          # write secrets if present
+          if [ -n "${GMAIL_CREDS:-}" ]; then
+            printf '%s' "$GMAIL_CREDS" > resources/credentials.json
+          fi
+          if [ -n "${GMAIL_TOKEN:-}" ]; then
+            printf '%s' "$GMAIL_TOKEN" > resources/token.json
+          fi
+
+      - name: Run Automation Tests (produce Allure results)
+        env:
+          MOZ_HEADLESS: 1
+          PYTHONUNBUFFERED: "1"
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          echo "Running $PYTEST_MARKER tests on Firefox"
+          rm -rf allure-results allure-report allure-history
+          mkdir -p allure-results
+          # run tests and always continue so report generation runs even on failures
+          pytest \
+            -m "$PYTEST_MARKER" \
+            --reruns 2 \
+            --reruns-delay 3 \
+            --alluredir=allure-results \
+            --tb=short \
+            -v || true
+
+      - name: Fix workspace ownership (pre-report)
+        if: always()
+        run: sudo chown -R $USER:$USER .
+
+      - name: Generate Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Fix Allure report permissions
+        if: always()
+        run: |
+          # Ensure the runner can write files into the generated report dir
+          sudo chown -R $USER:$USER ./allure-report || true
+          sudo chown -R $USER:$USER ./allure-results || true
+          ls -ld ./allure-report || true
+          ls -la ./allure-report | head -n 20 || true
+
+      - name: Generate Single HTML Report (standalone-report.html)
+        if: always()
+        run: |
+          set -uo pipefail
+          if [ ! -d "allure-report" ]; then
+            echo "allure-report directory not found — nothing to combine. Listing workspace for debug:"
+            ls -la
+            exit 0
+          fi
+
+          # Combine into a single HTML file
+          # allure-combine ./allure-report
+          allure-combine ./allure-report || true
+
+          if [ -f "allure-report/complete.html" ]; then
+            mv allure-report/complete.html ./standalone-report.html
+            echo "Standalone report generated: standalone-report.html"
+            ls -lh standalone-report.html
+          else
+            echo "allure-combine did not produce complete.html. Listing allure-report contents:"
+            ls -la allure-report
+            exit 0
+          fi
+
+      - name: Upload Allure HTML (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: allure-standalone-report
+          path: standalone-report.html
+          retention-days: 7
+
+      - name: Send Allure HTML Report to Discord (robust, non-failing)
+        if: always()
+        shell: bash -l {0}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          BROWSER_NAME: firefox
+          GITHUB_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PYTEST_MARKER: ${{ env.PYTEST_MARKER }}
+        run: |
+          # make the step robust: retries for network, capture responses, never let this step return non-zero
+          set -uo pipefail
+
+          if [ -z "${DISCORD_WEBHOOK:-}" ]; then
+            echo "DISCORD_WEBHOOK not configured — skipping Discord notification"
+            exit 0
+          fi
+
+          REPORT_FILE="standalone-report.html"
+          FINAL_NAME="Soprada-Report-${{ github.run_number }}.html"
+          RESPONSE_FILE="/tmp/discord_response.txt"
+
+          PAYLOAD=$(jq -n \
+            --arg title "Soprada Automation – Test Report" \
+            --arg desc "**Browser:** $BROWSER_NAME\n**Suite:** $PYTEST_MARKER\n\nAllure HTML report attached to this message (if allowed by Discord server limits)." \
+            '{embeds:[{title:$title, description:$desc}]}')
+
+          if [ ! -f "$REPORT_FILE" ]; then
+            echo "Report file not found: $REPORT_FILE — sending embed only"
+            # retrying basic JSON post; allow failure but capture response
+            curl --retry 3 --retry-delay 5 --retry-all-errors --fail -s -S -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK" -o "$RESPONSE_FILE" || true
+            echo "Discord response (embed-only):"
+            cat "$RESPONSE_FILE" || true
+            echo "Discord embed step finished (forced success)."
+            exit 0
+          fi
+
+          MAX_BYTES=8000000
+          FILESIZE=$(stat -c%s "$REPORT_FILE")
+          echo "Original report size: $FILESIZE bytes"
+
+          # 1) try attach original HTML (with retries)
+          if [ "$FILESIZE" -le "$MAX_BYTES" ]; then
+            echo "Attaching original HTML"
+            curl --retry 3 --retry-delay 5 --retry-all-errors --fail -s -S \
+              -H "Content-Type: multipart/form-data" \
+              -F "payload_json=$PAYLOAD" \
+              -F "file=@$REPORT_FILE;filename=$FINAL_NAME" \
+              "$DISCORD_WEBHOOK" -o "$RESPONSE_FILE" || true
+            echo "Discord response (original):"
+            cat "$RESPONSE_FILE" || true
+            echo "Discord upload attempt (original) finished (forced success)."
+            exit 0
+          fi
+
+          # 2) try gzip
+          if gzip -c "$REPORT_FILE" > "${REPORT_FILE}.gz"; then
+            GZ_SIZE=$(stat -c%s "${REPORT_FILE}.gz" || echo 0)
+            echo "Gzipped size: $GZ_SIZE bytes"
+            if [ "$GZ_SIZE" -le "$MAX_BYTES" ] && [ "$GZ_SIZE" -gt 0 ]; then
+              echo "Attaching gzipped report"
+              curl --retry 3 --retry-delay 5 --retry-all-errors --fail -s -S \
+                -H "Content-Type: multipart/form-data" \
+                -F "payload_json=$PAYLOAD" \
+                -F "file=@${REPORT_FILE}.gz;filename=${FINAL_NAME}.gz" \
+                "$DISCORD_WEBHOOK" -o "$RESPONSE_FILE" || true
+              echo "Discord response (gzipped):"
+              cat "$RESPONSE_FILE" || true
+              echo "Discord upload attempt (gzipped) finished (forced success)."
+              exit 0
+            fi
+          else
+            echo "gzip failed; continuing to next strategy"
+          fi
+
+          # 3) try zip
+          if zip -q report.zip "$REPORT_FILE"; then
+            ZIP_SIZE=$(stat -c%s report.zip || echo 0)
+            echo "Zipped size: $ZIP_SIZE bytes"
+            if [ "$ZIP_SIZE" -le "$MAX_BYTES" ] && [ "$ZIP_SIZE" -gt 0 ]; then
+              echo "Attaching zipped report"
+              curl --retry 3 --retry-delay 5 --retry-all-errors --fail -s -S \
+                -H "Content-Type: multipart/form-data" \
+                -F "payload_json=$PAYLOAD" \
+                -F "file=@report.zip;filename=${FINAL_NAME}.zip" \
+                "$DISCORD_WEBHOOK" -o "$RESPONSE_FILE" || true
+              echo "Discord response (zip):"
+              cat "$RESPONSE_FILE" || true
+              echo "Discord upload attempt (zip) finished (forced success)."
+              exit 0
+            fi
+          else
+            echo "zip failed; continuing to next strategy"
+          fi
+
+          # 4) split zip into parts and attach parts (last resort)
+          echo "Report is larger than Discord limits after compression. Splitting into parts (~7.5MB) and attaching all parts."
+          mkdir -p parts
+          split -b 7500000 report.zip parts/part_ || true
+
+          # prepare multipart args
+          CURL_ARGS=(--retry 3 --retry-delay 5 --retry-all-errors --fail -s -S -H "Content-Type: multipart/form-data" -F "payload_json=$PAYLOAD")
+          for part in parts/*; do
+            [ -f "$part" ] || continue
+            FNAME=$(basename "$part")
+            CURL_ARGS+=(-F "file=@${part};filename=${FINAL_NAME}.zip.${FNAME}")
+          done
+          CURL_ARGS+=("$DISCORD_WEBHOOK" -o "$RESPONSE_FILE")
+
+          # Execute curl to upload all parts (guard against failure)
+          if [ "${#CURL_ARGS[@]}" -gt 0 ]; then
+            curl "${CURL_ARGS[@]}" || true
+            echo "Discord response (parts):"
+            cat "$RESPONSE_FILE" || true
+            echo "Uploaded parts (if allowed). To reconstruct: concatenate in order and unzip:"
+            echo "cat ${FINAL_NAME}.zip.part_* > report.zip && unzip report.zip"
+          else
+            echo "No parts to upload."
+          fi
+
+          # Force success for this step regardless of previous command exit codes
+          echo "Discord upload step completed; forcing step success to avoid failing the job."
+          exit 0
+
+      - name: Cleanup sensitive files
+        if: always()
+        run: |
+          rm -f resources/credentials.json || true
+          rm -f resources/token.json || true
