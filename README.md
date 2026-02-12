@@ -1,8 +1,8 @@
-# Saauzi Automation Framework
+# Soprada Automation Framework
 
-[![Saauzi Automation CI/CD](https://github.com/anilchaudhary449/Saauzi/actions/workflows/cicd.yml/badge.svg)](https://github.com/anilchaudhary449/Saauzi/actions/workflows/cicd.yml)
+[![Soprada Automation CI/CD](https://github.com/anilchaudhary449/Soprada/actions/workflows/cicd.yml/badge.svg)](https://github.com/anilchaudhary449/Soprada/actions/workflows/cicd.yml)
 
-A professional, industry-grade Selenium automation framework designed for the Saauzi E-commerce platform. This framework leverages the Page Object Model (POM) pattern and integrates with the Gmail API for automated OTP authentication.
+A professional, industry-grade Selenium automation framework designed for the Soprada E-commerce platform. This framework leverages the Page Object Model (POM) pattern and integrates with the Gmail API for automated OTP authentication.
 
 ---
 
@@ -31,12 +31,12 @@ A professional, industry-grade Selenium automation framework designed for the Sa
 ## 📁 Project Structure
 
 ```text
-SaauziAutomation/
+SopradaAutomation/
 ├── .github/workflows/      # CI/CD pipeline configurations (cicd.yml)
 ├── pages_ecom/             # Page Object Model (POM) implementation
 ├── locators_ecom/          # Central repository for element locators
 ├── tests/                  # Test suites and execution logic
-│   └── test_saauzi.py      # Main end-to-end automation tests
+│   └── test_soprada.py      # Main end-to-end automation tests
 ├── utils/                  # Utility functions
 │   ├── gmail_api.py        # Gmail API OAuth 2.0 integration
 │   └── security.py         # Encryption/Decryption utilities
@@ -179,4 +179,4 @@ To run tests in CI, you must add the following secrets in your Repository Settin
 This project is for internal automation purposes. All rights reserved.
 
 ---
-**Developed with ❤️ for Saauzi Automation**
+**Developed with ❤️ for Soprada Automation**
