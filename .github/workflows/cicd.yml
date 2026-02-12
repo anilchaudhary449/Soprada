@@ -9,8 +9,8 @@ on:
     branches: ["*"]
   pull_request:
     branches: [main, master]
-  schedule:
-    - cron: "15 3,6,9,12 * * *"  # Runs at 09:00, 12:00, 15:00, 18:00 NPT (UTC+5:45), everyday
+#  schedule:
+#    - cron: "15 3,6,9,12 * * *"  # Runs at 09:00, 12:00, 15:00, 18:00 NPT (UTC+5:45), everyday
   workflow_dispatch:
 
 jobs:
