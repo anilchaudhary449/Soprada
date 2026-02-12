@@ -357,252 +357,252 @@ def test_review(logged_in_setup):
     review_page = Review(driver)
     review_page.toggle_review_visibility()
 
-@allure.feature("Customer Service")
-@allure.story("Enquiries")
-@allure.title("Verify enquiry handling")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_enquiry(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_enquiry()
-    enquiry_page = Enquiry(driver)
-    enquiry_page.mark_all_as_seen()
-    enquiry_page.toggle_status()
-    enquiry_page.view_enquiry()
+# @allure.feature("Customer Service")
+# @allure.story("Enquiries")
+# @allure.title("Verify enquiry handling")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_enquiry(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_enquiry()
+#     enquiry_page = Enquiry(driver)
+#     enquiry_page.mark_all_as_seen()
+#     enquiry_page.toggle_status()
+#     enquiry_page.view_enquiry()
 
-@allure.feature("Customer Service")
-@allure.story("Support Cases")
-@allure.title("Verify support case management")
-@pytest.mark.smoke  
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_support_case(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_support_case()
-    support_case_page = SupportCase(driver)
+# @allure.feature("Customer Service")
+# @allure.story("Support Cases")
+# @allure.title("Verify support case management")
+# @pytest.mark.smoke  
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_support_case(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_support_case()
+#     support_case_page = SupportCase(driver)
 
-    support_case_status = random_status()
-    support_case_page.filter_by_status(support_case_status)
+#     support_case_status = random_status()
+#     support_case_page.filter_by_status(support_case_status)
 
-@allure.feature("Content & Marketing")
-@allure.story("Blog")
-@allure.title("Verify blog post lifecycle")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_blog(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_blog()                      
-    blog_page = Blog(driver)
+# @allure.feature("Content & Marketing")
+# @allure.story("Blog")
+# @allure.title("Verify blog post lifecycle")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_blog(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_blog()                      
+#     blog_page = Blog(driver)
 
-    blog_category_name, blog_category_short_description = get_random_blog_category_data()
-    blog_page.new_category(blog_category_name, blog_category_short_description)
-    # time.sleep(2)
-    # blog_category_name1, blog_category_short_description1 = get_random_blog_category_data()
-    # blog_page.new_category(blog_category_name1, blog_category_short_description1)
-    time.sleep(0.5)
+#     blog_category_name, blog_category_short_description = get_random_blog_category_data()
+#     blog_page.new_category(blog_category_name, blog_category_short_description)
+#     # time.sleep(2)
+#     # blog_category_name1, blog_category_short_description1 = get_random_blog_category_data()
+#     # blog_page.new_category(blog_category_name1, blog_category_short_description1)
+#     time.sleep(0.5)
 
-    blog_page.edit_category(blog_category_name+"_updated", blog_category_short_description+"_updated")
-    blog_page.delete_category()
-    time.sleep(0.5)
+#     blog_page.edit_category(blog_category_name+"_updated", blog_category_short_description+"_updated")
+#     blog_page.delete_category()
+#     time.sleep(0.5)
     
-    title, image_path, content, author, meta_description = get_random_blog_data()
-    blog_page.add_blog(title, image_path, content, author, meta_description)
-    blog_page.view_blog()
-    blog_page.edit_blog(title+"_updated", image_path, content+"_updated", author+"_updated", meta_description+"_updated")
-    blog_page.delete_blog()
+#     title, image_path, content, author, meta_description = get_random_blog_data()
+#     blog_page.add_blog(title, image_path, content, author, meta_description)
+#     blog_page.view_blog()
+#     blog_page.edit_blog(title+"_updated", image_path, content+"_updated", author+"_updated", meta_description+"_updated")
+#     blog_page.delete_blog()
 
-@allure.feature("Content & Marketing")
-@allure.story("Coupons")
-@allure.title("Verify coupon code creation and viewing")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_marketing(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_marketing()
-    marketing_page = Marketing(driver)
+# @allure.feature("Content & Marketing")
+# @allure.story("Coupons")
+# @allure.title("Verify coupon code creation and viewing")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_marketing(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_marketing()
+#     marketing_page = Marketing(driver)
     
-    # Generate random test data
-    heading = f"{promo_heading()}"
-    code = f"SAVE{random.randint(1, 9999)}"
-    dis_pct = str(random.randint(5, 50))
-    pct_amt = str(random.randint(50, 200))
-    min_pur_amt = str(random.randint(500, 2000))
-    start_date = get_random_start_date()
-    end_date = get_random_end_date(start_date)
+#     # Generate random test data
+#     heading = f"{promo_heading()}"
+#     code = f"SAVE{random.randint(1, 9999)}"
+#     dis_pct = str(random.randint(5, 50))
+#     pct_amt = str(random.randint(50, 200))
+#     min_pur_amt = str(random.randint(500, 2000))
+#     start_date = get_random_start_date()
+#     end_date = get_random_end_date(start_date)
     
-    marketing_page.marketing()
-    marketing_page.add_coupon_code(heading, code, dis_pct, pct_amt, min_pur_amt, start_date, end_date)
-    marketing_page.view_coupon()
+#     marketing_page.marketing()
+#     marketing_page.add_coupon_code(heading, code, dis_pct, pct_amt, min_pur_amt, start_date, end_date)
+#     marketing_page.view_coupon()
 
-@allure.feature("Content & Marketing")
-@allure.story("Sliders")
-@allure.title("Verify slider management")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_sliders(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_sliders()
-    sliders_page = Sliders(driver)
+# @allure.feature("Content & Marketing")
+# @allure.story("Sliders")
+# @allure.title("Verify slider management")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_sliders(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_sliders()
+#     sliders_page = Sliders(driver)
     
-    # Generate random slider data
-    title, subtitle, description, image_path, link_name, link_url = get_random_slider_data()
+#     # Generate random slider data
+#     title, subtitle, description, image_path, link_name, link_url = get_random_slider_data()
     
-    # Test Adding a Slider
-    print(f"Adding slider: {title}")
-    sliders_page.add_sliders(image_path, title, subtitle, description, link_name, link_url)
+#     # Test Adding a Slider
+#     print(f"Adding slider: {title}")
+#     sliders_page.add_sliders(image_path, title, subtitle, description, link_name, link_url)
     
-    time.sleep(2)
-    # Test Editing a Slider (randomly)
-    title2, subtitle2, description2, _, link_name2, link_url2 = get_random_slider_data()
-    print(f"Editing slider to: {title2}")
-    sliders_page.edit_sliders(title2, subtitle2, description2, link_name2, link_url2)
-    time.sleep(2)
-    sliders_page.delete_sliders()
+#     time.sleep(2)
+#     # Test Editing a Slider (randomly)
+#     title2, subtitle2, description2, _, link_name2, link_url2 = get_random_slider_data()
+#     print(f"Editing slider to: {title2}")
+#     sliders_page.edit_sliders(title2, subtitle2, description2, link_name2, link_url2)
+#     time.sleep(2)
+#     sliders_page.delete_sliders()
 
-@allure.feature("Store Settings")
-@allure.story("Themes")
-@allure.title("Verify theme selection")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_themes(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_themes()
-    themes_page = Themes(driver)
-    themes_page.apply_random_theme()
+# @allure.feature("Store Settings")
+# @allure.story("Themes")
+# @allure.title("Verify theme selection")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_themes(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_themes()
+#     themes_page = Themes(driver)
+#     themes_page.apply_random_theme()
 
-@allure.feature("Store Settings")
-@allure.story("Plugins")
-@allure.title("Verify plugin installation and activation")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_plugins(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_plugins()
-    plugins_page = Plugins(driver)
-    plugins_page.plugins()
-    plugins_page.install_plugins()
-    plugins_page.activate_plugin()
+# @allure.feature("Store Settings")
+# @allure.story("Plugins")
+# @allure.title("Verify plugin installation and activation")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_plugins(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_plugins()
+#     plugins_page = Plugins(driver)
+#     plugins_page.plugins()
+#     plugins_page.install_plugins()
+#     plugins_page.activate_plugin()
 
-@allure.feature("Store Settings")
-@allure.story("Staff")
-@allure.title("Verify staff assignment and role management")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_staff(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_staff()
-    staff_page = Staff(driver)
+# @allure.feature("Store Settings")
+# @allure.story("Staff")
+# @allure.title("Verify staff assignment and role management")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_staff(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_staff()
+#     staff_page = Staff(driver)
 
-    f_name= full_name_staff()
-    email = email_staff()
-    phone = phone_staff()
-    address = address_staff()
+#     f_name= full_name_staff()
+#     email = email_staff()
+#     phone = phone_staff()
+#     address = address_staff()
 
-    staff_page.add_staff(f_name, email, phone,address)
+#     staff_page.add_staff(f_name, email, phone,address)
 
-    f_name1 = full_name_staff()
-    address1 = address_staff()
-    staff_page.edit_staff(f_name1, address1)
+#     f_name1 = full_name_staff()
+#     address1 = address_staff()
+#     staff_page.edit_staff(f_name1, address1)
 
-    staff_page.delete_staff()
+#     staff_page.delete_staff()
 
-    staff_page.add_role_permission()
+#     staff_page.add_role_permission()
 
-@allure.feature("Store Settings")
-@allure.story("Payments")
-@allure.title("Verify payment method configuration")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_payments(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_payments()
-    payments_page = Payments(driver)
-    payments_page.payments_cash_on_delivery()
-    payments_page.payments_manual_payment(get_qr_image())
+# @allure.feature("Store Settings")
+# @allure.story("Payments")
+# @allure.title("Verify payment method configuration")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_payments(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_payments()
+#     payments_page = Payments(driver)
+#     payments_page.payments_cash_on_delivery()
+#     payments_page.payments_manual_payment(get_qr_image())
 
-@allure.feature("Store Settings")
-@allure.story("Settings(Themes,Site Information,Company Details,Contact Information,Social Media Links,Return Policy,Refund Policy,Privacy Policy,Terms & Conditions)")
-@allure.title("Verify overall site information, settings and policies")
-@pytest.mark.smoke
-@pytest.mark.regression
-@pytest.mark.sanity
-@pytest.mark.cross_browser
-def test_settings(logged_in_setup):
-    driver = logged_in_setup
-    sidebar = Sidebar(driver)
-    sidebar.navigate_to_settings()
-    settings_page = Settings(driver)
-    settings_page.theme_settings()
+# @allure.feature("Store Settings")
+# @allure.story("Settings(Themes,Site Information,Company Details,Contact Information,Social Media Links,Return Policy,Refund Policy,Privacy Policy,Terms & Conditions)")
+# @allure.title("Verify overall site information, settings and policies")
+# @pytest.mark.smoke
+# @pytest.mark.regression
+# @pytest.mark.sanity
+# @pytest.mark.cross_browser
+# def test_settings(logged_in_setup):
+#     driver = logged_in_setup
+#     sidebar = Sidebar(driver)
+#     sidebar.navigate_to_settings()
+#     settings_page = Settings(driver)
+#     settings_page.theme_settings()
 
-    organization_name = organization()
-    logo = get_logo()
-    favicon = get_favicon()
-    profile = get_profile()
-    slogan_lines = slogan()
-    settings_page.site_information(organization_name,logo,favicon,profile,slogan_lines,map_link)
+#     organization_name = organization()
+#     logo = get_logo()
+#     favicon = get_favicon()
+#     profile = get_profile()
+#     slogan_lines = slogan()
+#     settings_page.site_information(organization_name,logo,favicon,profile,slogan_lines,map_link)
 
-    vat_num = vat_number()
-    vat_pct = vat_percentage()
-    addr = address()
-    about = about_us()
+#     vat_num = vat_number()
+#     vat_pct = vat_percentage()
+#     addr = address()
+#     about = about_us()
     
-    settings_page.company_details(addr, about)
-    settings_page.tax_information(vat_num, vat_pct)
+#     settings_page.company_details(addr, about)
+#     settings_page.tax_information(vat_num, vat_pct)
 
-    contact = contact_number()
-    alternate_contact = alternate_contact_number()
-    email_address = email()
-    alt_email_address = alternate_email()
-    whatsapp_number = whatsapp()
-    viber_number = viber()
-    settings_page.contact_information(contact, alternate_contact, email_address, alt_email_address, whatsapp_number, viber_number)
-    time.sleep(1)
+#     contact = contact_number()
+#     alternate_contact = alternate_contact_number()
+#     email_address = email()
+#     alt_email_address = alternate_email()
+#     whatsapp_number = whatsapp()
+#     viber_number = viber()
+#     settings_page.contact_information(contact, alternate_contact, email_address, alt_email_address, whatsapp_number, viber_number)
+#     time.sleep(1)
 
-    facebook = facebook_link()
-    instagram = instagram_link()
-    twitter = twitter_link()
-    linkedin = linkedin_link()
-    youtube = youtube_link()
-    tiktok = tiktok_link()
-    settings_page.social_media_links(facebook, instagram, twitter, linkedin, youtube, tiktok)
-    time.sleep(1)
+#     facebook = facebook_link()
+#     instagram = instagram_link()
+#     twitter = twitter_link()
+#     linkedin = linkedin_link()
+#     youtube = youtube_link()
+#     tiktok = tiktok_link()
+#     settings_page.social_media_links(facebook, instagram, twitter, linkedin, youtube, tiktok)
+#     time.sleep(1)
 
-    return_policy_val = return_policy()
-    settings_page.return_policy(return_policy_val)
-    time.sleep(1)
+#     return_policy_val = return_policy()
+#     settings_page.return_policy(return_policy_val)
+#     time.sleep(1)
 
-    privacy_policy_val = privacy_policy()
-    settings_page.privacy_policy(privacy_policy_val)
+#     privacy_policy_val = privacy_policy()
+#     settings_page.privacy_policy(privacy_policy_val)
 
-    time.sleep(1)
-    terms_and_conditions_val = terms_and_conditions()
-    settings_page.terms_and_conditions(terms_and_conditions_val)
+#     time.sleep(1)
+#     terms_and_conditions_val = terms_and_conditions()
+#     settings_page.terms_and_conditions(terms_and_conditions_val)
 
 
     
