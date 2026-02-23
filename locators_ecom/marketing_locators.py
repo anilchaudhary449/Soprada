@@ -22,5 +22,5 @@ class MarketingLocators:
     
     # Modal Footer Actions
     ADD_COUPON_SUBMIT_BTN = (By.XPATH, "//div[contains(@class,'modal__footer')]/child::button[text()='Add Coupon Code']")
-    CLOSE_MODAL_BTN = (By.XPATH, "//button[text()='Close']")
+    CLOSE_MODAL_BTN = (By.XPATH, "//button[normalize-space(.)='Close']")
     CROSS_MODAL_BTN = (By.XPATH, "//div[contains(@class,'modal__header')]/following::button[contains(@class,'modal__close')]")

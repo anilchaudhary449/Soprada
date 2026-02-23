@@ -11,7 +11,7 @@ class ShippingChargeLocators:
     
     # Edit Modal
     CITY_NAME_INPUT = (By.XPATH, "//input[contains(@type,'text') and contains(@placeholder,'Enter city name')]")
-    LOGISTIC_CHARGE_INPUT = (By.XPATH, "//div[@class='my-6 add-logistic-charge']/child::input[contains(@type,'text') and contains(@class,'szi-input__control')]")
+    LOGISTIC_CHARGE_INPUT = (By.XPATH, "//div[contains(@class,'add-logistic-charge')]/child::input[contains(@type,'text') and contains(@class,'szi-input__control')]")
     DISTRICT_SELECT = (By.XPATH, "//select[@name='district']")
     DISTRICT_OPTIONS = (By.XPATH, "//option[not(@disabled)]")
     UPDATE_BTN = (By.XPATH, "//div[contains(@class,'modal-footer-buttons')]/button[text()='Update'] | //div[contains(@class,'modal-footer-buttons')]/button[text()='Save']")

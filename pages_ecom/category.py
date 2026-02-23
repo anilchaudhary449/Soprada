@@ -19,10 +19,10 @@ class Category:
         # Extract the base title from the concatenated title
         base_title = title.split('+')[0]
 
-        category_icon = self.wait.until(EC.presence_of_element_located(CategoryLocators.SIDEBAR_CATEGORY))
-        assert category_icon.is_enabled(), f"category isn't enabled."
-        category_icon.click()
-        time.sleep(2)
+        # category_icon = self.wait.until(EC.presence_of_element_located(CategoryLocators.SIDEBAR_CATEGORY))
+        # assert category_icon.is_enabled(), f"category isn't enabled."
+        # category_icon.click()
+        # time.sleep(2)
 
         add_new_category = self.wait.until(EC.presence_of_element_located(CategoryLocators.ADD_NEW_CATEGORY_BTN))
         assert add_new_category.is_enabled(), f"Add New Category isn't enabled."

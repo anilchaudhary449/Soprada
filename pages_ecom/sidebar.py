@@ -99,7 +99,7 @@ class Sidebar:
         self.navigate('Plugins')
 
     def navigate_to_staff(self):
-        self.navigate('Staff')
+        self.navigate('Staffs')
 
     def navigate_to_payments(self):
         self.navigate('Payments')

@@ -6,13 +6,13 @@ class BlogLocators:
     BLOG_CATEGORY_BTN = (By.XPATH, "//a[contains(normalize-space(.),'Blog Category')] | //a[contains(@href,'blog/category')]")
 
     # Blog New/Add Category
-    NEW_CATEGORY_BTN = (By.XPATH, "//button[.//span[normalize-space(.)='New Category']] | //span[normalize-space(.)='New Category']")
+    NEW_CATEGORY_BTN = (By.XPATH, "//button[.//div[normalize-space(.)='New Category']] | //span[normalize-space(.)='New Category']")
     CATEGORY_NAME_INPUT = (By.XPATH, "//input[@id='title'] | //input[@placeholder='Enter category title...']")
     SHORT_DESCRIPTION_INPUT = (By.XPATH, "//textarea[@id='short_description'] | //textarea[@placeholder='Enter category short description...']")    
     SAVE_CATEGORY_BTN = (By.XPATH, "//button[normalize-space(.)='Create Blog Category' or .//span[normalize-space(.)='Create Blog Category']]")
 
     # Blog Category Action
-    EDIT_CATEGORY_BTNS = (By.XPATH, "//button[@title='Edit Blog'] | //button[descendant::*[@title='Edit Blog']]")
+    EDIT_CATEGORY_BTNS = (By.XPATH, "//button[@title='Edit Blog']")
     DELETE_CATEGORY_BTNS = (By.XPATH, "//button[@title='Delete Blog'] | //button[descendant::*[@title='Delete Blog']]")
 
     # Blog Category Update
@@ -20,6 +20,9 @@ class BlogLocators:
  
     # Blog Category Delete
     CONFIRM_DELETE_CATEGORY_BTN = (By.XPATH, "//button[normalize-space(.)='Delete Category']")
+
+    # Back to blog main page
+    BACK_TO_BLOG_BTN = (By.XPATH, "//button[@class='go__back-btn']")
     
     # Blog
     VIEW_BTNS = (By.XPATH, "//button[@title='View Blog'] | //td[@class='data__table-body']//button[@type='button' and @title='View Blog']")
@@ -35,7 +38,8 @@ class BlogLocators:
     CONTENT_EDITOR = (By.XPATH, "//div[@id='blog_content']//div[contains(@class,'ql-editor')] | //div[contains(@class,'ql-editor')]")
     SEO_SETTING_BTN = (By.XPATH, "//div[normalize-space()='SEO Settings' and @class='h6']")
     SEO_META_DESCRIPTION = (By.XPATH, "//textarea[contains(@placeholder,'meta') or @id='blog_meta_description']")
-    SAVE_BLOG_BTN = (By.XPATH, "//span[normalize-space()= 'Create Blog' or normalize-space(.)='Update Blog']")
+    SAVE_BLOG_BTN = (By.ID, "create_blog")
+    UPDATE_BLOG_BTN = (By.XPATH, "//div[normalize-space(.)='Update Blog' and contains(@class,'gap-x-2')]")
     
     # Confirmation
     CONFIRM_DELETE_BTN = (By.XPATH, "//button[contains(text(),'Delete Blog') or contains(text(),'Confirm') or contains(text(),'Delete Category')]")

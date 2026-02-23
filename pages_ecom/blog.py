@@ -11,6 +11,7 @@ class Blog:
     def __init__(self, driver, timeout=60):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, timeout)
+        
 
     
     @allure.step("Create new blog category: {category_name}")
@@ -107,6 +108,21 @@ class Blog:
         except Exception as e:
              print(f"An error occurred while verifying Blog Category delete alert: {e}")
 
+        time.sleep(1)
+
+    @allure.step("Back to blog main page")
+    def back_to_blog(self):
+        back_to_blog = self.wait.until(EC.presence_of_element_located(BlogLocators.BACK_TO_BLOG_BTN))
+        try:
+            print("Back to blog main page button clicking...")
+            back_to_blog.click()
+            print("Back to blog main page button clicked...")
+        except:
+            print("Back to blog main page button clicking...")
+            self.driver.execute_script("arguments[0].click();", back_to_blog)
+            print("Back to blog main page button clicked...")
+        print(f"Back to blog main page, Current URL: {self.driver.current_url}")
+        time.sleep(2)
     @allure.step("Click Add Blog button")
     def add_blog(self, title, image_path, author, content, meta_description):
 
@@ -120,7 +136,7 @@ class Blog:
         self.data_fillers_blog(title, image_path, author, content, meta_description)
         print("blog data filled successfully...")
         time.sleep(0.5)
-        self.wait.until(EC.presence_of_element_located(BlogLocators.SAVE_BLOG_BTN)).click()
+        self.save_blog()
         print("Blog saved successfully...")
         time.sleep(2)
 
@@ -255,7 +271,7 @@ class Blog:
         time.sleep(1)
         self.data_fillers_blog(title, image_path, author, content, meta_description)
         print("Edit blog data filled...")
-        self.save_blog()
+        self.wait.until(EC.presence_of_element_located(BlogLocators.UPDATE_BLOG_BTN)).click()
         print("Edit blog saved...")
         time.sleep(1)
 

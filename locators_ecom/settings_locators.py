@@ -13,14 +13,14 @@ class SettingsLocators:
     TERMS_CONDITIONS_TAB = (By.XPATH, "//div[text()='Terms & Conditions']")
     
     # Common Actions
-    SAVE_CHANGES_BTN = (By.XPATH, "//button[text()='Save Changes']")
+    SAVE_CHANGES_BTN = (By.XPATH, "//button[normalize-space(.)='Save Changes']")
     ALERT_TOP = (By.XPATH, "//div[@class='alert-wrapper alert-wrapper--top']")
     
     # Site Information
     ORG_NAME_INPUT = (By.XPATH, "//input[contains(@placeholder, 'organization')] | //div[contains(@class, 'organization')]//input")
     LOGO_UPLOAD = (By.XPATH, "//button[normalize-space()='Upload Logo']/child::input")
     FAVICON_UPLOAD = (By.XPATH, "//div[contains(@class,'upload-favicon')]//following::button[normalize-space()='Upload Favicon']/child::input | //div[contains(@class,'upload-favicon')]//input[@type='file']")
-    PROFILE_UPLOAD = (By.XPATH, "//div[contains(@class,'image-button')]/button[normalize-space()='Upload Profile']/child::input | //div[contains(@class,'image-button')]//input[@type='file']")
+    PROFILE_UPLOAD = (By.XPATH, "//button[normalize-space(.)='Upload Profile']/following-sibling::input[@type='file']")
     SLOGAN_INPUT = (By.XPATH, "//input[contains(@placeholder, 'slogan')] | //div[contains(@class, 'slogan')]//input")
     CURRENCY_SELECT = (By.XPATH, "//label[normalize-space()='Currency']/following-sibling::select[contains(@class,'szi-input__control')]")
     CURRENCY_OPTIONS = (By.XPATH, "//select[contains(@class,'szi-input__control')]/child::option[not(text()='No' or text()='Yes')]")
@@ -34,9 +34,9 @@ class SettingsLocators:
     
     #Tax Information
     VAT_TOGGLE_BTN = (By.ID, "enable-disable-pan-vat-number")
-    VAT_TOGGLE_BTN_CHECKBOX = (By.XPATH, "//label[normalize-space(.)='Enable VAT/PAN']")
-    VAT_INPUT = (By.XPATH, "//input[@placeholder='Enter your VAT/PAN...']")
-    VAT_PCT = (By.XPATH,"//input[@placeholder='Enter your VAT in Percent...']")
+    VAT_TOGGLE_BTN_CHECKBOX = (By.XPATH, "//label[normalize-space(.)='Enable VAT/PAN'] | //label[normalize-space(.)='Disable VAT/PAN']")
+    VAT_INPUT = (By.XPATH, "//input[@placeholder='Enter your VAT/PAN...' and @id='vat-pan']")
+    VAT_PCT = (By.XPATH,"//input[@placeholder='Enter your VAT in Percent...' and @id='vat-pan']")
 
     # Contact Information
     CONTACT_NUM_INPUT = (By.XPATH, "//div[contains(@class,'contact-number')]/input")

@@ -7,8 +7,11 @@ class EnquiryLocators:
     VIEW_ENQUIRY_BTN = (By.XPATH, "//button[@title='view']")
     
     # Enquiry Detail/Reply
-    REPLID_STATUS_BADGE = (By.XPATH, "//span[text()='Replied']")
-    EDIT_REPLY_BTN = (By.XPATH, "//button[contains(@class, 'btn btn-light') and normalize-space(.)='Edit']")
+    PENDING_STATUS_BADGE = (By.XPATH,"//span[normalize-space(.)='Pending']")
+    REPLIED_STATUS_BADGE = (By.XPATH, "//span[normalize-space(.)='Replied']")
+    EDIT_REPLY_BTN = (By.XPATH, "//button[contains(@class, 'btn btn--ghost') or normalize-space(.)='Edit' and @title='view']")
+    EDIT_BTN = (By.XPATH, "//button[normalize-space(.)='Edit']")
+    
     REPLY_TEXTAREA = (By.XPATH, "//div[contains(@class,'enquiry-response')]/child::textarea")
     SUBMIT_REPLY_BTN = (By.XPATH, "//button[normalize-space(.)='Submit Enquiry Reply']")
     

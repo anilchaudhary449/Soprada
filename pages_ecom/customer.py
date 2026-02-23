@@ -34,7 +34,7 @@ class Customer:
         self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", customer_name_input)
         customer_name_input.clear()
         customer_name_input.send_keys(customer_name)
-        print("Customer name entered...")
+        print(f"Customer name entered...{customer_name}")
 
     @allure.step("Enter customer email: {customer_email}")
     def enter_customer_email(self, customer_email):
@@ -43,7 +43,7 @@ class Customer:
         self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", customer_email_input)
         customer_email_input.clear()
         customer_email_input.send_keys(customer_email)
-        print("Customer email entered...")
+        print(f"Customer email entered...{customer_email}")
 
     @allure.step("Enter customer phone: {customer_phone}")
     def enter_customer_phone(self, customer_phone):
@@ -52,7 +52,7 @@ class Customer:
         self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", customer_phone_input)
         customer_phone_input.clear()
         customer_phone_input.send_keys(customer_phone)
-        print("Customer phone entered...")
+        print(f"Customer phone entered...{customer_phone}")
 
     @allure.step("Enter customer street: {customer_street}")
     def enter_customer_street(self, customer_street):
@@ -61,7 +61,7 @@ class Customer:
         self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", customer_street_input)
         customer_street_input.clear()
         customer_street_input.send_keys(customer_street)
-        print("Customer street entered...")
+        print(f"Customer street entered...{customer_street}")
 
     @allure.step("Select random customer city")
     def select_customer_city(self):
@@ -72,11 +72,11 @@ class Customer:
         randomly_select_customer_city = random.choice(customer_city_options)
         try:
             randomly_select_customer_city.click()
-            print("Customer city selected...")
+            print(f"Customer city selected...{randomly_select_customer_city.text}")
         except:
             self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", randomly_select_customer_city)
             self.driver.execute_script("arguments[0].click();", randomly_select_customer_city)
-            print("Customer city selected...")
+            print(f"Customer city selected...{randomly_select_customer_city.text}")
 
     @allure.step("Upload customer image: {image_name}")
     def upload_customer_image(self, image_name="customer_image.png"):

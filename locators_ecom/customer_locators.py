@@ -13,7 +13,7 @@ class CustomerLocators:
     STREET_INPUT = (By.XPATH, "//div[starts-with(@class,'add-customer-address col-6')]/child::input[@placeholder='Enter customer Street Address']")
     CITY_SELECT = (By.XPATH, "//label[text()='City']/following-sibling::select[contains(@class,'szi-input__control')]")
     CITY_OPTIONS = (By.XPATH, "//option[not(@disabled)]")
-    FILE_INPUT = (By.XPATH, "//div[starts-with(@class,'p-6')]/child::input[@type='file']")
+    FILE_INPUT = (By.XPATH, "//div[starts-with(@class,'mt-2')]/following-sibling::input[@type='file']")
     SUBMIT_CUSTOMER_BTN = (By.XPATH, "//div[@class='modal__footer']/button[text()='Add New Customer']")
     
     # View/Update Customer

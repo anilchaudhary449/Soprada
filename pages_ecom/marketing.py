@@ -125,12 +125,12 @@ class Marketing:
             
             # Dismiss modal
             try:
-                close_btn = self.wait.until(EC.element_to_be_clickable(MarketingLocators.CLOSE_MODAL_BTN))
+                close_btn = self.wait.until(EC.presence_of_element_located(MarketingLocators.CLOSE_MODAL_BTN))
                 close_btn.click()
                 print("Close button clicked...")
             except Exception:
                 try:
-                    cross_btn = self.wait.until(EC.element_to_be_clickable(MarketingLocators.CROSS_MODAL_BTN))
+                    cross_btn = self.wait.until(EC.presence_of_element_located(MarketingLocators.CROSS_MODAL_BTN))
                     cross_btn.click()
                     print("Cross button clicked...")
                 except Exception:

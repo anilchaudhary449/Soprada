@@ -859,6 +859,9 @@ def slogan():
     ]
     return random.choice(slogans)
 
+def get_map_link():
+    return "https://www.google.com/maps"    
+
 
 def vat_number():
     return f.numerify("##########")
@@ -1096,3 +1099,49 @@ alphabet = [
     ]
 def get_random_alphabet():
     return random.choice(alphabet)
+
+
+def get_random_e_com_module():
+    modules = [
+        "Dashboard",
+        "Custom Domain",
+        "Category",
+        "Products",
+        "Inventory Management",
+        "Variants",
+        "Orders",
+        "Customers",
+        "Reviews",
+        "Shipping Charge Setting",
+        "Settings",
+        "Staffs",
+        "Enquiry",
+        "Themes",
+        "Blogs",
+        "Support Case",
+        "Sliders",
+        "Plugins",
+        "Payments"
+    ]
+    return random.choice(modules)
+
+def get_random_pos_module():
+    modules = [
+        "Dashboard",
+        "Point of Sale",
+        "Shift Management",
+        "Suppliers",
+        "Purchase",
+        "Sales",
+        "Inventory",
+        "Product Performance",
+        "Sales Report",
+        "Purchase Report",
+        "Suppliers Report",
+        "Sales Activity",
+        "Purchase Activity",
+        "Purchase Stock History",
+        "Customer",
+        "Product Management"
+    ]
+    return random.choice(modules)
