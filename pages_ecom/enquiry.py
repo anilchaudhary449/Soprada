@@ -83,7 +83,7 @@ class Enquiry:
             
             time.sleep(1)
             # Click L13 (EDIT_BTN)
-            edit_btn = self.wait.until(EC.element_to_be_clickable(EnquiryLocators.EDIT_BTN))
+            edit_btn = self.wait.until(EC.presence_of_element_located(EnquiryLocators.EDIT_BTN))
             try:
                 edit_btn.click()
                 print("Internal Edit button (L13) clicked...")

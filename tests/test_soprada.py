@@ -468,7 +468,7 @@ def test_blog(logged_in_setup):
     
     blog_page.add_blog(title, image_path, content, author, meta_description)
     blog_page.view_blog()
-    blog_page.edit_blog(title+"_updated", image_path, content+"_updated", author+"_updated", meta_description+"_updated")
+    blog_page.edit_blog(title+"_updated", image_path, content+"_updated", author+"_updated", meta_description+"_updated") # type: ignore
     blog_page.delete_blog()
     time.sleep(0.5)
 
