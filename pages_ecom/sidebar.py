@@ -23,7 +23,7 @@ class Sidebar:
         
         for i in range(3):
             try:
-                elem = self.wait.until(EC.element_to_be_clickable(locator))
+                elem = self.wait.until(EC.presence_of_element_located(locator))
                 
                 # Ensure element is not obscured by a header or footer
                 self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", elem)

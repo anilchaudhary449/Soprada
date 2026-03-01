@@ -117,7 +117,7 @@ def logged_in_setup(setup):
     
     # Wait for login to complete and handle redirects
     try:
-        WebDriverWait(driver, 60).until(lambda d:
+        WebDriverWait(driver, 10).until(lambda d:
             "dashboard" in d.current_url.lower()
             or "create-store" in d.current_url.lower()
             or "select-store" in d.current_url.lower()

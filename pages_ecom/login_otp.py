@@ -54,5 +54,8 @@ class login_with_otp:
                 time.sleep(0.1) # Small delay for UI to register
         
         time.sleep(1)
-        verify_btn = self.wait.until(EC.element_to_be_clickable(LoginLocators.VERIFY_BTN))
-        self.driver.execute_script("arguments[0].click();", verify_btn)
+        verify_btn = self.wait.until(EC.presence_of_element_located(LoginLocators.VERIFY_BTN))
+        try:
+            self.driver.execute_script("arguments[0].click();", verify_btn)
+        except:
+            verify_btn.click()

@@ -38,7 +38,7 @@ class BlogLocators:
     CONTENT_EDITOR = (By.XPATH, "//div[@id='blog_content']//div[contains(@class,'ql-editor')] | //div[contains(@class,'ql-editor')]")
     SEO_SETTING_BTN = (By.XPATH, "//div[normalize-space()='SEO Settings' and @class='h6']")
     SEO_META_DESCRIPTION = (By.XPATH, "//textarea[contains(@placeholder,'meta') or @id='blog_meta_description']")
-    SAVE_BLOG_BTN = (By.ID, "create_blog")
+    SAVE_BLOG_BTN = (By.ID, "create-blog")
     UPDATE_BLOG_BTN = (By.XPATH, "//div[normalize-space(.)='Update Blog' and contains(@class,'gap-x-2')]")
     
     # Confirmation

@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
 
 class LoginLocators:
-    EMAIL_INPUT = (By.XPATH, "//input[@class='form-input']")
-    LOGIN_BTN = (By.XPATH, "//button[contains(@class,'btn-login')]/span")
+    EMAIL_INPUT = (By.ID, "email")
+    LOGIN_BTN = (By.ID, "login-btn")
     RESEND_BTNS = [
         (By.XPATH, "//button[contains(text(),'Resend')]"),
         (By.XPATH, "//a[contains(text(),'Resend')]"),
@@ -10,4 +10,4 @@ class LoginLocators:
         (By.XPATH, "//button[contains(text(),'Send again')]")
     ]
     OTP_INPUTS = (By.XPATH, "//input[@type='text' and @maxlength='1']")
-    VERIFY_BTN = (By.XPATH, "//button[contains(@class,'btn-verify')]")
+    VERIFY_BTN = (By.XPATH, "//button[contains(@class,'login-btn') and normalize-space(.)='Verify']")
